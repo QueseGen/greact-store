@@ -1,0 +1,27 @@
+const mongoose=require('mongoose');
+const Schema=mongoose.Schema;
+
+const eventSchema = new Schema({
+  _id: {
+    type: String,
+    require: true
+  },
+  title: {
+    type: String,
+    require: true
+  },
+  description: {
+    type: String,
+    require: true
+  },
+  price: {
+    type: Number,
+    require: true
+  },
+  date: {
+    type: Date,
+    require: true
+  }
+});
+
+module.exports=mongoose.model('Event', eventSchema)
