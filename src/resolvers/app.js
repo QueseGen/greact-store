@@ -28,6 +28,7 @@ const authMiddleware = jwt({
 })
 
 app.use(authMiddleware)
+let currentuser = null;
 
 const gqlHTTP =require('express-graphql');
 const { buildSchema }= require('graphql');
@@ -84,15 +85,14 @@ app.use('/graphql', gqlHTTP.graphqlHTTP({
         })
       });},
     Login:(args)=>{
-      return User.findOne({name: args.userInput.name}).
+      return User.find({name: args.userInput.name}).
       then(user =>{
           if (user!==true) {
             throw new Error('User not found.')
           } else{
-            User.findById(args.userInput.name)
             if (user && args.userInput.password!==user.password){
             throw new Error('Password mismatch.')
-          }
+          } else { currentuser=user; console.log("Welcome {}!",user.name);}
         }}).catch(err=> {
         console.log(err);
         });},
