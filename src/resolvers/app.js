@@ -8,7 +8,7 @@ app.use(bodyParser.json());
 const types='type Event {_id: ID! title: String! description: String! price: Float! date: String!} type User{ _id: ID! name: String! password: String! company: [Company] } type Company{ _id: ID! name: String! inventory: [Product]} type Product{ _id: ID! name: String! price: Float! size: Float! color: String! sold: Int! instock: Int!}'
 const inputs=' input EventInput { title: String! description: String! price: Float!} input UserInput { name: String! password: String! } input CompanyInput { name: String!}';
 const queries=' type RootQuery { events:[Event!]! users:[User!]! companies:[Company!]! products:[Product!]!}';
-const mutations=' type RootMutation { createEvent(eventInput: EventInput!): Event createUser(userInput: UserInput!): User createCompany(companyInput: CompanyInput!): Company}';
+const mutations=' type RootMutation { createEvent(eventInput: EventInput!): Event createUser(userInput: UserInput!): User createCompany(companyInput: CompanyInput!): Company Login(userInput: UserInput!): User}';
 const schemas=' schema {query: RootQuery mutation: RootMutation}';
 const query=types+inputs+queries+mutations+schemas;
 
@@ -87,12 +87,12 @@ app.use('/graphql', gqlHTTP.graphqlHTTP({
     Login:(args)=>{
       return User.find({name: args.userInput.name}).
       then(user =>{
-          if (user!==true) {
+          if (user==null || typeof user === "undefined" || Object.keys(user).length === 0) {
             throw new Error('User not found.')
           } else{
-            if (user && args.userInput.password!==user.password){
-            throw new Error('Password mismatch.')
-          } else { currentuser=user; console.log("Welcome {}!",user.name);}
+            if (args.userInput.password!==user[0].password){
+            throw new Error('Password mismatch. Entered: ' + args.userInput.password + '\n'+user[0])
+          } else { currentuser=user; console.log("Welcome "+ user[0].name+ "!")}
         }}).catch(err=> {
         console.log(err);
         });},
