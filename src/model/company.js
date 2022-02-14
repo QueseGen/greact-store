@@ -16,6 +16,12 @@ const companySchema = new Schema({
       type: Schema.Types.ObjectId,
       ref: 'Product'
     }
+  ],
+  members: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: 'User'
+    }
   ]
 })
 

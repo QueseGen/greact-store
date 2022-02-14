@@ -5,7 +5,7 @@ const app = express();
 const bodyParser= require('body-parser');
 app.use(bodyParser.json());
 
-const types='type Event {_id: ID! title: String! description: String! price: Float! date: String!} type User{ _id: ID! name: String! password: String! company: [Company] } type Company{ _id: ID! name: String! inventory: [Product]} type Product{ _id: ID! name: String! price: Float! size: Float! color: String! sold: Int! instock: Int!}'
+const types='type Event {_id: ID! title: String! description: String! price: Float! date: String!} type User{ _id: ID! name: String! password: String! company: [Company] } type Company{ _id: ID! name: String! inventory: [Product] members: [Users]} type Product{ _id: ID! name: String! price: Float! size: Float! color: String! sold: Int! instock: Int!}'
 const inputs=' input EventInput { title: String! description: String! price: Float!} input UserInput { name: String! password: String! } input CompanyInput { name: String!}';
 const queries=' type RootQuery { events:[Event!]! users:[User!]! companies:[Company!]! products:[Product!]!}';
 const mutations=' type RootMutation { createEvent(eventInput: EventInput!): Event createUser(userInput: UserInput!): User createCompany(companyInput: CompanyInput!): Company Login(userInput: UserInput!): User}';
@@ -29,6 +29,7 @@ const authMiddleware = jwt({
 
 app.use(authMiddleware)
 let currentuser = null;
+let currentcompany=null;
 
 const gqlHTTP =require('express-graphql');
 const { buildSchema }= require('graphql');
@@ -110,21 +111,28 @@ app.use('/graphql', gqlHTTP.graphqlHTTP({
       }).catch( err =>{console.log(err)});
     },
     createCompany:(args) => {
+      return Company.findOne({name: args.companyInput.name}).then(comp =>{
+        if (comp) {
+          throw new Error('Company exists already.')
+        } else if(currentuser!=null){
+          throw new Error('Please login first.')
+        }
+        return args.companyInput.name()
+      }).then( comp=>{
       const company= new Company({
         _id: Math.random().toString(),
-        name:args.companyInput.name,
-        inventory: []
+        name:comp,
+        members: [currentuser]
       });
-      company.save().then(result => {
+      company.save()}).then(result => {
         console.log(result);
         return {...result.doc};
       }).catch(err => {
         console.log(err);
       });},
     addProduct:(args)=>{
-
-}
-      },
+     }
+      ,
   graphiql: true}));
 
 app.get('/',(req, res, next) => {res.send('Hello World!');
