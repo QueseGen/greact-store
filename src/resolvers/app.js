@@ -89,8 +89,14 @@ app.use('/graphql', gqlHTTP.graphqlHTTP({
       then(user =>{
           if (user==null || typeof user === "undefined" || Object.keys(user).length === 0) {
             throw new Error('User not found.')
-          } else{
-            if (args.userInput.password!==user[0].password){
+          } else{ //args.userInput.password!==user[0].password){//
+            if (bcrypt.compare(args.userInput.password,user[0].password,(err, res) => {
+              if (err) {
+                console.error(err)
+                return
+              }
+              console.log(res+ " "+ args.userInput.password) //true or false
+            })){
             throw new Error('Password mismatch. Entered: ' + args.userInput.password + '\n'+user[0])
           } else { currentuser=user; console.log("Welcome "+ user[0].name+ "!")}
         }}).catch(err=> {
