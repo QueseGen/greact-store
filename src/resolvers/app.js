@@ -131,8 +131,7 @@ app.use('/graphql', gqlHTTP.graphqlHTTP({
         console.log(err);
       });},
     addProduct:(args)=>{
-     }
-      ,
+     }},
   graphiql: true}));
 
 app.get('/',(req, res, next) => {res.send('Hello World!');
