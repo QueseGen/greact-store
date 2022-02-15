@@ -5,7 +5,7 @@ const app = express();
 const bodyParser= require('body-parser');
 app.use(bodyParser.json());
 
-const types='type Event {_id: ID! title: String! description: String! price: Float! date: String!} type User{ _id: ID! name: String! password: String! company: [Company] } type Company{ _id: ID! name: String! inventory: [Product] members: [Users]} type Product{ _id: ID! name: String! price: Float! size: Float! color: String! sold: Int! instock: Int!}'
+const types='type Event {_id: ID! title: String! description: String! price: Float! date: String!} type User{ _id: ID! name: String! password: String! company: [Company] } type Company{ _id: ID! name: String! inventory: [Product] members: [User]} type Product{ _id: ID! name: String! price: Float! size: Float! color: String! sold: Int! instock: Int!}'
 const inputs=' input EventInput { title: String! description: String! price: Float!} input UserInput { name: String! password: String! } input CompanyInput { name: String!}';
 const queries=' type RootQuery { events:[Event!]! users:[User!]! companies:[Company!]! products:[Product!]!}';
 const mutations=' type RootMutation { createEvent(eventInput: EventInput!): Event createUser(userInput: UserInput!): User createCompany(companyInput: CompanyInput!): Company Login(userInput: UserInput!): User}';
@@ -130,7 +130,7 @@ app.use('/graphql', gqlHTTP.graphqlHTTP({
       }).catch(err => {
         console.log(err);
       });},
-    addProduct:(args)=>{
+    createProduct:(args)=>{
      }},
   graphiql: true}));
 
