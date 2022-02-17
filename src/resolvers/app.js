@@ -135,7 +135,7 @@ app.use('/graphql', gqlHTTP.graphqlHTTP({
   graphiql: true}));
 
 app.get('/',(req, res, next) => {res.send('Hello World!');
-})
+}) //add
 
 mongoose.connect('mongodb+srv://ric:0lang@cluster0.ewjef.mongodb.net/users?retryWrites=true&w=majority').then(()=>{app.listen(3000);}).catch(err =>{
   console.log(err);
