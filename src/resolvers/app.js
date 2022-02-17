@@ -130,6 +130,13 @@ app.use('/graphql', gqlHTTP.graphqlHTTP({
       }).catch(err => {
         console.log(err);
       });},
+    products: ()=>{
+      return Product.find().then( products=>{
+        return products.map(product =>{
+          return {...product._doc, _id: product._doc._id.toString()};
+        });
+      }).catch( err =>{console.log(err)});
+    },
     createProduct:(args)=>{
      }},
   graphiql: true}));
