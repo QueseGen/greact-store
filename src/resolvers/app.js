@@ -6,9 +6,9 @@ const bodyParser= require('body-parser');
 app.use(bodyParser.json());
 
 const types='type Event {_id: ID! title: String! description: String! price: Float! date: String!} type User{ _id: ID! name: String! password: String! company: [Company] } type Company{ _id: ID! name: String! inventory: [Product] members: [User]} type Product{ _id: ID! name: String! price: Float! size: Float! color: String! sold: Int! instock: Int!}'
-const inputs=' input EventInput { title: String! description: String! price: Float!} input UserInput { name: String! password: String! } input CompanyInput { name: String!}';
+const inputs=' input EventInput { title: String! description: String! price: Float!} input UserInput { name: String! password: String! } input CompanyInput { name: String!} input ProductInput { name: String! price: Float! size: Float! color: String! instock: Int!}';
 const queries=' type RootQuery { events:[Event!]! users:[User!]! companies:[Company!]! products:[Product!]!}';
-const mutations=' type RootMutation { createEvent(eventInput: EventInput!): Event createUser(userInput: UserInput!): User createCompany(companyInput: CompanyInput!): Company Login(userInput: UserInput!): User}';
+const mutations=' type RootMutation { createEvent(eventInput: EventInput!): Event createUser(userInput: UserInput!): User createCompany(companyInput: CompanyInput!): Company createProduct(productInput: ProductInput!): Product Login(userInput: UserInput!): User}';
 const schemas=' schema {query: RootQuery mutation: RootMutation}';
 const query=types+inputs+queries+mutations+schemas;
 
@@ -138,6 +138,27 @@ app.use('/graphql', gqlHTTP.graphqlHTTP({
       }).catch( err =>{console.log(err)});
     },
     createProduct:(args)=>{
+      return Product.findOne({name: args.productInput.name}).then(product =>{
+        if (product) {
+          throw new Error('User exists already.')
+        }
+        return args.productInput.name
+      }).then( pname =>{
+        const product= new User({
+          _id: Math.random().toString(),
+          name:pname,
+          price: args.productInput.price,
+          size: args.productInput.size,
+          color: args.productInput.color,
+          instock: args.productInput.instock
+        });
+        product.save().then(result => {
+          console.log(result);
+          return {...result.doc};
+        }).catch(err => {
+          console.log(err);
+        })
+      });
      }},
   graphiql: true}));
 
