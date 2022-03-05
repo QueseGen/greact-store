@@ -5,10 +5,10 @@ const app = express();
 const bodyParser= require('body-parser');
 app.use(bodyParser.json());
 
-const types='type Event {_id: ID! title: String! description: String! price: Float! date: String!} type User{ _id: ID! name: String! password: String! company: [Company] } type Company{ _id: ID! name: String! inventory: [Product] members: [User]} type Product{ _id: ID! name: String! description: String! price: Float! size: Float! color: String! sold: Int! instock: Int!}'
+const types='type Event {_id: ID! title: String! description: String! price: Float! date: String!} type User{ _id: ID! name: String! password: String! company: [Company] } type Company{ _id: ID! name: String! inventory: [Product] members: [User]} type Product{ _id: ID! name: String! description: String! price: Float! size: Float! color: String! sold: Int! instock: Int!}';
 const inputs=' input EventInput { title: String! description: String! price: Float!} input UserInput { name: String! password: String! } input CompanyInput { name: String!} input ProductInput { name: String! description: String! price: Float! size: Float! color: String! instock: Int!}';
 const queries=' type RootQuery { events:[Event!]! users:[User!]! companies:[Company!]! products:[Product!]!}';
-const mutations=' type RootMutation { createEvent(eventInput: EventInput!): Event createUser(userInput: UserInput!): User createCompany(companyInput: CompanyInput!): Company createProduct(productInput: ProductInput!): Product Login(userInput: UserInput!): User addProduct{name: String! size: Float! color: String! amount: Int!}';
+const mutations=' type RootMutation { createEvent(eventInput: EventInput!): Event createUser(userInput: UserInput!): User createCompany(companyInput: CompanyInput!): Company createProduct(productInput: ProductInput!): Product Login(userInput: UserInput!): User addProduct(name: String! size: Float! color: String! amount: Int!): String}';
 const schemas=' schema {query: RootQuery mutation: RootMutation}';
 const query=types+inputs+queries+mutations+schemas;
 
@@ -49,7 +49,7 @@ app.use('/graphql', gqlHTTP.graphqlHTTP({
         title:args.eventInput.title,
         description:args.eventInput.description,
         price: args.eventInput.price,
-        date: Date.now()
+        date: Date.now().getl
       });
       event.save().then(result => {
         console.log(result);
@@ -162,13 +162,18 @@ app.use('/graphql', gqlHTTP.graphqlHTTP({
       });
      }},
     addProduct:(args)=>{//Check for: name: String!, size: Float!, color: String!, || add: amount: Int!
+      if(currentcompany!=null){
+        throw new Error('Please login first.')
+      } else {
 
+      }
 },
   graphiql: true}));
 
 app.get('/',(req, res, next) => {res.send('Hello World!');
 }) //add
 
-mongoose.connect('mongodb+srv://ric:0lang@cluster0.ewjef.mongodb.net/users?retryWrites=true&w=majority').then(()=>{app.listen(3000);}).catch(err =>{
+mongoose.connect('mongodb+srv://ric:0lang@cluster0.ewjef.mongodb.net/users?retryWrites=true&w=majority').then(()=>{
+  app.listen(3000);}).catch(err =>{
   console.log(err);
 })

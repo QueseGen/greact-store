@@ -1,5 +1,5 @@
 Hello, lets get started:
-
+//Terminate all processes on port/  sudo lsof -i :3000
 1. Start downloading/cloning project 
 2. Once openned in IDE suggest running by entering "npm start" in terminal
 3, Next Open up web browser and go to http://localhost:3000/graphql
