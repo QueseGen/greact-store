@@ -5,10 +5,10 @@ const app = express();
 const bodyParser= require('body-parser');
 app.use(bodyParser.json());
 
-const types='type Event {_id: ID! title: String! description: String! price: Float! date: String!} type User{ _id: ID! name: String! password: String! company: [Company] } type Company{ _id: ID! name: String! inventory: [Product] members: [User]} type Product{ _id: ID! name: String! description: String! price: Float! size: Float! color: String! sold: Int! instock: Int!}';
-const inputs=' input EventInput { title: String! description: String! price: Float!} input UserInput { name: String! password: String! } input CompanyInput { name: String!} input ProductInput { name: String! description: String! price: Float! size: Float! color: String! instock: Int!}';
+const types='type Event {_id: ID! title: String! description: String! price: Float! date: String!} type User{ _id: ID! name: String! password: String! company: [Company] } type Company{ _id: ID! name: String! inventory: [Product] members: [User]} type Product{ _id: ID! name: String! description: String! price: Float! size: String! color: String! sold: Int! inventory: Int!}';
+const inputs=' input EventInput { title: String! description: String! price: Float!} input UserInput { name: String! password: String! } input CompanyInput { name: String!} input ProductInput { name: String! description: String! price: Float! size: String! color: String! inventory: Int!}';
 const queries=' type RootQuery { events:[Event!]! users:[User!]! companies:[Company!]! products:[Product!]!}';
-const mutations=' type RootMutation { createEvent(eventInput: EventInput!): Event createUser(userInput: UserInput!): User createCompany(companyInput: CompanyInput!): Company createProduct(productInput: ProductInput!): Product Login(userInput: UserInput!): User addProduct(name: String! size: Float! color: String! amount: Int!): String}';
+const mutations=' type RootMutation { createEvent(eventInput: EventInput!): Event createUser(userInput: UserInput!): User createCompany(companyInput: CompanyInput!): Company createProduct(productInput: ProductInput!): Product Login(userInput: UserInput!): User addProduct(name: String! size: String! color: String! howmany: Int!): String}';
 const schemas=' schema {query: RootQuery mutation: RootMutation}';
 const query=types+inputs+queries+mutations+schemas;
 
