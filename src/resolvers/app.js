@@ -169,7 +169,7 @@ app.use('/graphql', gqlHTTP.graphqlHTTP({
       }
 },
   graphiql: true}));
-
+// createEvent users /createUser
 app.get('/',(req, res, next) => {res.send('Hello World!');
 }) //add
 

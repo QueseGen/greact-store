@@ -6,7 +6,22 @@ Hello, lets get started:
    
 Here are some done test queries however more specific and secure versions are called under User Model/createUser
 
-#To create Company/Advance testing is being called User
+## Current Mutuations
+1. `createEvent(eventInput: EventInput!): Event`
+2. `createUser(userInput: UserInput!): User`
+   <pre> mutation {
+   createUser(userInput:{name:"John", password:"1234"}) {
+   name
+   password
+ }
+} </pre>
+3. `createCompany(companyInput: CompanyInput!):Company`
+4. `createProduct(productInput:ProductInput!): Product`
+5. `Login(userInput:UserInput!): User`
+6. `addProduct(name: String! size: Float! color:
+   String! amount: Int!): String`
+
+## To create Company/Advance testing is being called User
 mutation {
 createCompany(companyInput:{name:"Add a name"}){
 _id
