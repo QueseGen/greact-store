@@ -170,9 +170,11 @@ app.use('/graphql', gqlHTTP.graphqlHTTP({
 },
   graphiql: true}));
 // createEvent users /createUser
+
 app.get('/',(req, res, next) => {res.send('Hello World!');
 }) //add
-
+//const User=require('../model/user');
+const App=require('../view/src/App');
 mongoose.connect('mongodb+srv://ric:0lang@cluster0.ewjef.mongodb.net/users?retryWrites=true&w=majority').then(()=>{
   app.listen(3000);}).catch(err =>{
   console.log(err);

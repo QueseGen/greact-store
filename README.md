@@ -2,7 +2,7 @@
 To Terminate all processes on port open terminal and run `sudo lsof -i :3000` then `kill pid`.
 
 1. Start downloading/ git cloning project. 
-2. Once opened in IDE you may need to `npm intall` and `npm install -g npm` before running using `npm start` in terminal.
+2. Once opened in IDE you may need to `npm install` and `npm install -g npm` before running using `npm start` in terminal.
 3.  Next Open up web browser and go to `http://localhost:3000/graphql`.
    
 Here are some done test queries however make sure to change details.
